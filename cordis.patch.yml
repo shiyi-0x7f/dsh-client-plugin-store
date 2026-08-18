@@ -1,0 +1,4 @@
+# dsh-client-plugin-store 的组合层。config.catalogUrl 可覆盖目录源。
+- insert:
+    - id: plugin-store
+      name: 'dsh-client-plugin-store'

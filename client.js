@@ -140,23 +140,28 @@ window.__ModuleLoader__.load({
         current.phase === 'loading' ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '8px 0' } }, '正在加载社区目录…') : null,
         current.phase === 'error' ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-state-error-primary)', padding: '8px 0' } }, '目录加载失败：' + current.error) : null,
         current.phase === 'ready'
-          ? h('div', null,
-            matches.length === 0 ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '8px 0' } }, '没有匹配的插件。') : null,
+          ? h('div', {
+            // 固定高度的独立滚动区，触底自动追加下一页——没有分页按钮。
+            style: {
+              height: 'calc(100vh - 320px)',
+              minHeight: 260,
+              overflowY: 'auto',
+              border: '1px solid var(--dsw-alias-border-l1)',
+              borderRadius: 8,
+              padding: '0 12px',
+              background: 'var(--dsw-alias-bg-layer-1)',
+            },
+            onScroll: function (event) {
+              var el = event.currentTarget;
+              if (el.scrollTop + el.clientHeight >= el.scrollHeight - 200 && limit < matches.length) {
+                setLimit(limit + PAGE_SIZE);
+              }
+            },
+          },
+            matches.length === 0 ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '10px 0' } }, '没有匹配的插件。') : null,
             matches.slice(0, limit).map(function (entry) { return h(Row, { key: entry.repo, entry: entry }); }),
-            matches.length > limit
-              ? h('button', {
-                onClick: function () { setLimit(limit + PAGE_SIZE); },
-                style: {
-                  marginTop: 6,
-                  padding: '4px 12px',
-                  borderRadius: 6,
-                  border: '1px solid var(--dsw-alias-border-l2)',
-                  background: 'var(--dsw-alias-bg-layer-2)',
-                  color: 'var(--dsw-alias-label-primary)',
-                  cursor: 'pointer',
-                  fontSize: 12,
-                },
-              }, '加载更多（剩余 ' + (matches.length - limit) + '）')
+            limit < matches.length
+              ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '10px 0', textAlign: 'center' } }, '下拉加载更多…')
               : null,
           )
           : null,

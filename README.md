@@ -16,7 +16,7 @@ dsh plugin --profile web add github:shiyi-0x7f/dsh-client-plugin-store
 
 - host 半在 `ctx.webServer` 注册同源路由 `/plugin-store/catalog` 代理社区目录（端点无 CORS 头，浏览器不能直连），内存缓存一小时；`config.catalogUrl` 可换源。
 - 浏览器半（零构建懒 CJS 工厂）经 `ctx.slots` 注册 `settings.section` 独立分区（自带导航条目与整页面板）；样式全用 `--dsw-alias-*` 令牌，跟随任意主题/皮肤。
-- **刻意不提供安装端点**：loopback HTTP 对本机任意网页开放，可安装接口等于把任意代码执行暴露给驱动式攻击；安装命令由用户复制到 harness 终端自行执行。
+- **直接安装 / 卸载**：面板内两击确认，重启后生效；同时保留「复制命令」手动方式。变更端点带三层防护（自定义请求头、Origin 同源校验、安装 spec 仅接受目录同款的 `github:owner/repo#完整sha` 白名单），设计缘由见 `index.js` 头部注释。
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "name": "dsh-client-plugin-store",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Community plugin store panel for the DeepSeek Harness Web UI: browse and search the dshplugin.org index from Settings, with copyable pinned install commands",
   "license": "MIT",
   "type": "module",

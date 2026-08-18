@@ -22,9 +22,9 @@ window.__ModuleLoader__.load({
       var setCopied = copied[1];
       return h('div', {
         style: {
-          padding: '8px 0',
+          padding: '10px 0',
           borderBottom: '1px solid var(--dsw-alias-border-l1)',
-          fontSize: 12,
+          fontSize: 13,
         },
       },
         h('div', { style: { display: 'flex', gap: 8, alignItems: 'baseline', flexWrap: 'wrap' } },
@@ -112,14 +112,14 @@ window.__ModuleLoader__.load({
         }).sort(function (a, b) { return (b.stars || 0) - (a.stars || 0); });
       }
 
-      return h('div', { style: { padding: '4px 0' } },
-        h('div', { style: { display: 'flex', gap: 8, alignItems: 'center', marginBottom: 6 } },
-          h('span', { style: { fontWeight: 600, fontSize: 13, color: 'var(--dsw-alias-label-primary)' } }, '插件商店'),
+      return h('div', { style: { padding: '4px 2px' } },
+        h('div', { style: { display: 'flex', gap: 10, alignItems: 'baseline', marginBottom: 8 } },
+          h('span', { style: { fontWeight: 600, fontSize: 15, color: 'var(--dsw-alias-label-primary)' } }, '插件商店'),
           current.phase === 'ready'
-            ? h('span', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)' } }, '共 ' + current.catalog.plugins.length + ' 个（社区索引）')
+            ? h('span', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)' } }, '共 ' + current.catalog.plugins.length + ' 个（社区索引 dshplugin.org）')
             : null,
         ),
-        h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', marginBottom: 6 } },
+        h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', marginBottom: 10 } },
           '插件与 runtime 同权限运行，只安装可信来源；复制命令后在 harness 终端执行，重启后生效。'),
         h('input', {
           value: query,
@@ -128,19 +128,19 @@ window.__ModuleLoader__.load({
           style: {
             width: '100%',
             boxSizing: 'border-box',
-            padding: '6px 10px',
-            borderRadius: 6,
+            padding: '8px 12px',
+            borderRadius: 8,
             border: '1px solid var(--dsw-alias-border-l2)',
             background: 'var(--dsw-alias-bg-layer-1)',
             color: 'var(--dsw-alias-label-primary)',
-            fontSize: 12,
-            marginBottom: 4,
+            fontSize: 13,
+            marginBottom: 8,
           },
         }),
         current.phase === 'loading' ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '8px 0' } }, '正在加载社区目录…') : null,
         current.phase === 'error' ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-state-error-primary)', padding: '8px 0' } }, '目录加载失败：' + current.error) : null,
         current.phase === 'ready'
-          ? h('div', { style: { maxHeight: 320, overflowY: 'auto' } },
+          ? h('div', null,
             matches.length === 0 ? h('div', { style: { fontSize: 12, color: 'var(--dsw-alias-label-secondary)', padding: '8px 0' } }, '没有匹配的插件。') : null,
             matches.slice(0, limit).map(function (entry) { return h(Row, { key: entry.repo, entry: entry }); }),
             matches.length > limit
@@ -166,11 +166,13 @@ window.__ModuleLoader__.load({
     exports.name = 'plugin-store-panel';
     exports.inject = ['slots'];
     exports.apply = function (ctx) {
-      ctx.slots.inject('settings.general.item', function () {
+      // 独立设置分区：设置导航里自己的「插件商店」条目，整块面板区域。
+      ctx.slots.inject('settings.section', function () {
         return ctx.slots.register({
-          name: 'settings.general.item',
+          name: 'settings.section',
           id: 'plugin-store',
-          order: 90,
+          order: 60,
+          label: function () { return '插件商店'; },
         }, StorePanel);
       });
     };
